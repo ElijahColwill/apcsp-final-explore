@@ -17,8 +17,10 @@ def score_ai(score):
             dice.append(randrange(1, 7))
             num_of_dice += 1
         repeats = []
-        for x in dice:
+        count = 1
+        while count < 7:
             repeats.append(0)
+            count += 1
         for x in dice:
             if x == 1:
                 repeats[0] += 1
@@ -44,9 +46,8 @@ def score_ai(score):
             print "You rolled three of a kind!.\n"
             score += (which3 * 100)
             dice_left -= 3
-        if which3 == 5:
-            if which3 == 1:
-                five_or_one = True
+        if which3 == 5 or which3 == 1:
+            five_or_one = True
         if repeats[0] > 0 and not five_or_one:
             print "You rolled at least one one!"
             score += (repeats[0] * 100)
@@ -54,7 +55,7 @@ def score_ai(score):
         if repeats[4] > 0 and not five_or_one:
             print "You rolled at least one five!"
             score += (repeats[4] * 100)
-            dice_left -= repeats[0]
+            dice_left -= repeats[4]
 
         print "Your score is %d." % (score)
 
@@ -74,8 +75,7 @@ def score_ai(score):
             if hold == "Yes" or hold == "yes" or hold == "y" or hold == "Y":
                 hold = 0
             else: hold = 1
-        return score
-
+    return score
 
 def score_player(score):
     score = 0
@@ -92,8 +92,10 @@ def score_player(score):
             dice.append(randrange(1, 7))
             num_of_dice += 1
         repeats = []
-        for x in dice:
+        count = 1
+        while count < 7:
             repeats.append(0)
+            count += 1
         for x in dice:
             if x == 1:
                 repeats[0] += 1
@@ -119,9 +121,8 @@ def score_player(score):
             print "You rolled three of a kind!.\n"
             score += (which3 * 100)
             dice_left -= 3
-        if which3 == 5:
-            if which3 == 1:
-                five_or_one = True
+        if which3 == 5 or which3 == 1:
+            five_or_one = True
         if repeats[0] > 0 and not five_or_one:
             print "You rolled at least one one!"
             score += (repeats[0] * 100)
@@ -129,7 +130,7 @@ def score_player(score):
         if repeats[4] > 0 and not five_or_one:
             print "You rolled at least one five!"
             score += (repeats[4] * 100)
-            dice_left -= repeats[0]
+            dice_left -= repeats[4]
 
         print "Your score is %d." % (score)
 
@@ -167,7 +168,7 @@ def game():
     print """Farkle is a dice game in which players attempt to reach 10,000 in score
     by rolling six 6-sided die. Points are scored by rolling ones, fives,
     or three-of-a-kind. Ones are worth 100 points, fives are worth 500, and three-of-a-kind is worth
-    100 times the face value. """
+    100 times the face value.\n """
     player_score = 0
     computer_score = 0
 

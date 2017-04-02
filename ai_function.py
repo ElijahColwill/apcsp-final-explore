@@ -43,7 +43,7 @@ def score_ai(score, history):
 
         print "Computer's roll is: %r.\n" % (dice)
         if threeofakind:
-            print "Computer rolled three of a kind!.\n"
+            print "Computer rolled three of a kind!"
             score += (which3 * 100)
             dice_left -= 3
             history.append(1)
@@ -56,7 +56,7 @@ def score_ai(score, history):
             history.append(0.75)
         if repeats[4] > 0 and not five_or_one:
             print "Computer rolled at least one five!"
-            score += (repeats[4] * 100)
+            score += (repeats[4] * 50)
             dice_left -= repeats[4]
             history.append(0.75)
 
@@ -79,20 +79,20 @@ def score_ai(score, history):
             hold = input.scan()
             risk_setting = randrange(0, 7)
             average_luck = sum(history)/float(len(history))
-            if risk_setting > 5 or average_luck > 0.9:
+            if risk_setting > 5 or average_luck > 0.8 or dice_left > 4:
                 hold = 0
-                print "Decided to roll! \n"
+                print "Decided to roll!"
             else:
                 hold = 1
-                print "Decided to hold! Turn over. \n"
+                print "Decided to hold! Turn over."
     return score, history
 
 def score_player(score):
     score = 0
-    change = 0
     hold = 0
     dice_left = 6
     while hold == 0:
+        change = score
         five_or_one = False
         threeofakind = False
         which3 = 0
@@ -128,7 +128,7 @@ def score_player(score):
 
         print "Your roll is: %r.\n" % (dice)
         if threeofakind:
-            print "You rolled three of a kind!.\n"
+            print "You rolled three of a kind!"
             score += (which3 * 100)
             dice_left -= 3
         if which3 == 5 or which3 == 1:
@@ -139,7 +139,7 @@ def score_player(score):
             dice_left -= repeats[0]
         if repeats[4] > 0 and not five_or_one:
             print "You rolled at least one five!"
-            score += (repeats[4] * 100)
+            score += (repeats[4] * 50)
             dice_left -= repeats[4]
 
         print "Your score is %d." % (score)
@@ -149,17 +149,17 @@ def score_player(score):
             input.scan()
             dice_left = 6
             hold = 0
-        elif score == change:
-            print "Uh oh! Farkle. Score for this turn is 0, and the turn is over."
-            score = 0
-            hold = 1
-        else:
+        elif score != change:
             print "You have %d dice left." % (dice_left)
             print "Do you want to roll again? Type 'y' for Yes or anything else for No and press enter."
             hold = input.scan()
             if hold == "Yes" or hold == "yes" or hold == "y" or hold == "Y":
                 hold = 0
             else: hold = 1
+        else:
+            print "Uh oh! Farkle. Score for this turn is 0, and the turn is over."
+            score = 0
+            hold = 1
     return score
 
 
@@ -184,13 +184,17 @@ def game():
     computer_score = 0
 
     while player_score < 10000 and computer_score < 10000:
+        temp_total_player = 0
+        temp_total_computer = 0
         print "Press enter when ready to start player turn."
         input.scan()
-        player_score = turn(player_score, False, history)
+        temp_total_player, history = turn(temp_total_player, False, history)
+        player_score += temp_total_player
         print "\nPlayer score: %d" % player_score
         print "\nPress enter when ready to start computer turn."
         input.scan()
-        computer_score, history = turn(computer_score, True, history)
+        temp_total_computer, history = turn(temp_total_computer, True, history)
+        computer_score += temp_total_computer
         print "\nComputer score: %d" % computer_score
 
     if player_score >= 10000:

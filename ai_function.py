@@ -4,10 +4,10 @@ import time
 
 def score_ai(score, history):
     score = 0
-    change = 0
     hold = 0
     dice_left = 6
     while hold == 0:
+        change = 0
         five_or_one = False
         threeofakind = False
         which3 = 0
@@ -68,23 +68,28 @@ def score_ai(score, history):
             dice_left = 6
             hold = 0
             history.append(1.25)
-        elif score == change:
-            print "Uh oh! Farkle. Score for this turn is 0, and the turn is over."
-            score = 0
-            hold = 1
-            history.append(0)
-        else:
+        elif score != change:
             print "Computer has %d dice left." % (dice_left)
             print "Deciding wether to roll again. (press enter to continue)"
             hold = input.scan()
             risk_setting = randrange(0, 7)
             average_luck = sum(history)/float(len(history))
-            if risk_setting > 5 or average_luck > 0.8 or dice_left > 4:
-                hold = 0
-                print "Decided to roll!"
+            if risk_setting > 5 or average_luck > 0.9 or dice_left > 4:
+                if score < 800:
+                    hold = 0
+                    print "Decided to roll!"
+                else:
+                    hold = 1
+                    print "Decided to hold! Turn over."
             else:
                 hold = 1
                 print "Decided to hold! Turn over."
+        else:
+            print "Uh oh! Farkle. Score for this turn is 0, and the turn is over."
+            score = 0
+            hold = 1
+            history.append(0)
+
     return score, history
 
 def score_player(score):
@@ -175,7 +180,7 @@ def turn(total, turn, history):
 
 def game():
     history = []
-    print "Welcome to Two Player Farkle!\n"
+    print "Welcome to Two Player Farkle! (v1.3)\n"
     print """Farkle is a dice game in which players attempt to reach 10,000 in score
     by rolling six 6-sided die. Points are scored by rolling ones, fives,
     or three-of-a-kind. Ones are worth 100 points, fives are worth 500, and three-of-a-kind is worth
